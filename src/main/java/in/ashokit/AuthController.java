@@ -1,7 +1,5 @@
 package in.ashokit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +28,6 @@ public class AuthController {
     @Autowired
     private JwtHelper helper;
 
-    private Logger logger = LoggerFactory.getLogger(AuthController.class);
-
-
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
 
@@ -42,7 +37,7 @@ public class AuthController {
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
         String token = this.helper.generateToken(userDetails);
 
-        JwtResponse response = new JwtResponse(userDetails.getUsername(),token);
+        JwtResponse response = new JwtResponse(token, userDetails.getUsername());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
